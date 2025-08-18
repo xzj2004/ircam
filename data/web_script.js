@@ -1,3 +1,8 @@
+//**代码作者：搞硬件的辛工，开源地址：https://github.com/xzj2004/ircam 
+//**项目合作微信：mcugogogo，如果您有任何创意或想法或者项目落地需求都可以和我联系 
+//**本项目开源协议MIT，允许自由修改发布及商用 
+//**本项目仅用于学习交流，请勿用于非法用途 
+
 const canvas = document.getElementById('thermalCanvas');
 canvas.style.imageRendering = 'pixelated';
 const ctx = canvas.getContext('2d');
@@ -141,9 +146,12 @@ function changeResolution() {
     if (lastData) updateThermalImage(lastData);
 }
 
+// 修改toggleAdvanced函数
 function toggleAdvanced() {
     const advControls = document.getElementById('advancedControls');
-    advControls.style.display = advControls.style.display === 'none' ? 'block' : 'none';
+    const isVisible = advControls.style.display !== 'none';
+    advControls.style.display = isVisible ? 'none' : 'block';
+    document.getElementById('toggleAdvancedButton').textContent = isVisible ? '高级设置' : '隐藏设置';
 }
 
 function toggleTempSmooth() {
@@ -241,23 +249,6 @@ function generateGaussianKernel(radius) {
     return kernel;
 }
 
-// 修改HTML中的高级设置部分
-const advancedHtml = `
-    <div style="margin:5px 0;">
-        <label style="color:#fff;margin-right:10px;">高斯模糊: <input type="range" id="blurRadius" min="0" max="5" value="0" step="1" style="width:100px;"></label>
-        <span id="blurValue" style="color:#fff;">0</span>
-    </div>
-    <div style="margin:5px 0;">
-        <label style="color:#fff;margin-right:10px;">最小温度: <input type="number" id="minTempManual" style="width:60px;" value="15" step="1"></label>
-        <label style="color:#fff;margin-right:10px;">最大温度: <input type="number" id="maxTempManual" style="width:60px;" value="35" step="1"></label>
-        <button id="applyManualRangeButton">应用温度范围</button>
-        <button id="resetAutoRangeButton">自动温度范围</button>
-    </div>
-    <div style="margin:5px 0;">
-        <label style="color:#fff;margin-right:10px;">发射率: <input type="number" id="emissivity" style="width:60px;" value="0.95" min="0.1" max="1.0" step="0.01"></label>
-        <button id="updateEmissivityButton">更新发射率</button>
-    </div>`;
-
 // 在DOMContentLoaded事件中更新高级设置HTML
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('resolution').value = 'fullscreen';
@@ -281,9 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('resetAutoRangeButton').addEventListener('click', resetAutoRange);
     document.getElementById('updateEmissivityButton').addEventListener('click', updateEmissivity);
 
-    // 更新高级设置HTML
-    document.getElementById('advancedControls').innerHTML = advancedHtml;
-    
     // 添加高斯模糊滑块事件监听
     const blurSlider = document.getElementById('blurRadius');
     const blurValue = document.getElementById('blurValue');

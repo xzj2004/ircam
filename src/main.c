@@ -1,3 +1,8 @@
+//**代码作者：搞硬件的辛工，开源地址：https://github.com/xzj2004/ircam 
+//**项目合作微信：mcugogogo，如果您有任何创意或想法或者项目落地需求都可以和我联系 
+//**本项目开源协议MIT，允许自由修改发布及商用 
+//**本项目仅用于学习交流，请勿用于非法用途 
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -43,16 +48,34 @@ static EventGroupHandle_t s_wifi_event_group;
 // HTML页面 - 分段存储以避免编译器限制
 static const char* html_start = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>MLX90640 热成像相机</title><style>";
 static const char* html_style = "body{font-family:Arial,sans-serif;margin:0;padding:0;background-color:#000;height:100vh;overflow:hidden}"
-    ".container{width:100vw;height:100vh;margin:0;padding:0;background-color:#000;display:flex;flex-direction:column}"
+    ".container{width:100vw;height:100vh;margin:0;padding:0;background-color:#000;display:flex;flex-direction:column;position:relative}"
     "h1{color:#fff;text-align:center;margin:5px 0;font-size:1.2em;display:flex;align-items:center;justify-content:center}"
     ".fps-display{color:#4CAF50;margin-left:15px;font-size:0.9em}"
     "#thermalCanvas{width:100%;height:calc(100vh - 120px);margin:0 auto;display:block;background-color:#000}"
     ".controls{text-align:center;margin:5px 0;background:rgba(0,0,0,0.7);padding:5px}"
     ".controls button,.controls select{padding:5px 10px;margin:0 3px;font-size:12px;cursor:pointer;background-color:#4CAF50;color:white;border:none;border-radius:3px}"
     ".controls button:hover,.controls select:hover{background-color:#45a049}"
-    "#tempRange{margin:5px 0;text-align:center;color:#fff;font-size:0.9em;background:rgba(0,0,0,0.7);padding:5px 0}";
+    "#tempRange{margin:5px 0;text-align:center;color:#fff;font-size:0.9em;background:rgba(0,0,0,0.7);padding:5px 0}"
+    "#advancedControls{position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:5px;z-index:1000;width:300px}"
+    "#advancedControls label{display:block;margin:5px 0;color:#fff}"
+    "#advancedControls input[type='number']{width:60px;padding:2px 5px;margin-right:5px}"
+    "#advancedControls input[type='range']{width:100px;margin-right:5px}"
+    "#advancedControls button{margin:2px 5px;padding:3px 8px;background-color:#4CAF50;color:white;border:none;border-radius:3px;cursor:pointer}"
+    "#advancedControls button:hover{background-color:#45a049}";
 static const char* html_head_end = "</style></head><body><div class=\"container\">";
-static const char* html_body = "<h1>MLX90640 热成像相机<span class=\"fps-display\">(<span id=\"frameRate\">0</span> FPS)</span></h1>"
+static const char* html_body = "<div id=\"advancedControls\" style=\"display:none;\">"
+    "<div style=\"margin:5px 0;\">"
+    "<label>高斯模糊: <input type=\"range\" id=\"blurRadius\" min=\"0\" max=\"5\" value=\"0\" step=\"1\"><span id=\"blurValue\">0</span></label>"
+    "<label>温度范围平滑: <input type=\"checkbox\" id=\"tempSmooth\"></label>"
+    "<label>最小温度: <input type=\"number\" id=\"minTempManual\" value=\"15\" step=\"1\"></label>"
+    "<label>最大温度: <input type=\"number\" id=\"maxTempManual\" value=\"35\" step=\"1\"></label>"
+    "<button id=\"applyManualRangeButton\">应用温度范围</button>"
+    "<button id=\"resetAutoRangeButton\">自动温度范围</button>"
+    "<label>发射率: <input type=\"number\" id=\"emissivity\" value=\"0.95\" min=\"0.1\" max=\"1.0\" step=\"0.01\"></label>"
+    "<button id=\"updateEmissivityButton\">更新发射率</button>"
+    "</div>"
+    "</div>"
+    "<h1>MLX90640 热成像相机<span class=\"fps-display\">(<span id=\"frameRate\">0</span> FPS)</span></h1>"
     "<canvas id=\"thermalCanvas\"></canvas>"
     "<div class=\"controls\">"
     "<select id=\"colormap\">"
@@ -77,19 +100,6 @@ static const char* html_body = "<h1>MLX90640 热成像相机<span class=\"fps-di
     "<button id=\"startButton\">开始采集</button>"
     "<button id=\"stopButton\">停止采集</button>"
     "<button id=\"toggleAdvancedButton\">高级设置</button>"
-    "</div>"
-    "<div id=\"advancedControls\" style=\"display:none; text-align:center; margin:5px 0; background:rgba(0,0,0,0.7); padding:5px;\">"
-    "<div style=\"margin:5px 0;\">"
-    "<label style=\"color:#fff;margin-right:10px;\">温度范围平滑: <input type=\"checkbox\" id=\"tempSmooth\"></label>"
-    "<label style=\"color:#fff;margin-right:10px;\">最小温度: <input type=\"number\" id=\"minTempManual\" style=\"width:60px;\" value=\"15\" step=\"1\"></label>"
-    "<label style=\"color:#fff;margin-right:10px;\">最大温度: <input type=\"number\" id=\"maxTempManual\" style=\"width:60px;\" value=\"35\" step=\"1\"></label>"
-    "<button id=\"applyManualRangeButton\">应用温度范围</button>"
-    "<button id=\"resetAutoRangeButton\">自动温度范围</button>"
-    "</div>"
-    "<div style=\"margin:5px 0;\">"
-    "<label style=\"color:#fff;margin-right:10px;\">发射率: <input type=\"number\" id=\"emissivity\" style=\"width:60px;\" value=\"0.95\" min=\"0.1\" max=\"1.0\" step=\"0.01\"></label>"
-    "<button id=\"updateEmissivityButton\">更新发射率</button>"
-    "</div>"
     "</div>"
     "<div id=\"tempRange\">"
     "<span>最低温度: <span id=\"minTemp\">--</span>&#176;C</span>"
