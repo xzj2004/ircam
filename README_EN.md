@@ -6,7 +6,7 @@ This is a smart thermal imaging camera project based on ESP32-C3 and MLX90640 in
 
 **Project Author:** Hardware Engineer Xin  
 **Open Source Address:** https://github.com/xzj2004/ircam  
-**Project Collaboration WeChat:** mcugogogo  
+**Project Collaboration WhatsApp:** +86 17354491260  
 **Open Source License:** MIT (Free modification, distribution, and commercial use allowed)
 
 ## Core Features
@@ -189,7 +189,7 @@ pio run --target upload
 
 ## Contribution and Collaboration
 
-Welcome to submit Issues and Pull Requests to improve the project. If you have creative ideas or project implementation needs, please contact the author through WeChat `mcugogogo` for collaboration.
+Welcome to submit Issues and Pull Requests to improve the project. If you have creative ideas or project implementation needs, please contact the author through WhatsApp at `+86 17354491260` for collaboration.
 
 ## License
 
