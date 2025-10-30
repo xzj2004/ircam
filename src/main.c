@@ -512,9 +512,16 @@ static esp_err_t thermal_data_get_handler(httpd_req_t *req)
         json_buffer[current_pos++] = '[';
         
         for(int i = 0; i < THERMAL_DATA_SIZE; i++) {
+            // 检查温度值是否有效（排除NaN和Inf）
+            float temp = mlx90640_temperatures[i];
+            if (!isfinite(temp)) {
+                // 如果温度无效，使用0或前一个有效值
+                temp = 0.0f;
+            }
+            
             // 使用1位小数来减少数据大小，同时保持足够的精度
             int written = snprintf(json_buffer + current_pos, JSON_BUFFER_SIZE - current_pos,
-                                    "%s%.1f", i == 0 ? "" : ",", mlx90640_temperatures[i]);
+                                    "%s%.1f", i == 0 ? "" : ",", temp);
                                     
             if (written < 0 || written >= JSON_BUFFER_SIZE - current_pos) {
                 ESP_LOGE(TAG, "JSON buffer overflow");
