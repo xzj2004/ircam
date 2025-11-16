@@ -151,7 +151,11 @@ function toggleAdvanced() {
     const advControls = document.getElementById('advancedControls');
     const isVisible = advControls.style.display !== 'none';
     advControls.style.display = isVisible ? 'none' : 'block';
-    document.getElementById('toggleAdvancedButton').textContent = isVisible ? '高级设置' : '隐藏设置';
+    if (currentLang === 'zh') {
+        document.getElementById('toggleAdvancedButton').textContent = isVisible ? '高级设置' : '隐藏设置';
+    } else {
+        document.getElementById('toggleAdvancedButton').textContent = isVisible ? 'Advanced' : 'Hide';
+    }
 }
 
 function toggleTempSmooth() {
@@ -247,6 +251,33 @@ function generateGaussianKernel(radius) {
     }
     
     return kernel;
+}
+
+// 语言切换功能
+let currentLang = 'zh';
+
+function toggleLanguage() {
+    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    updateLanguage();
+}
+
+function updateLanguage() {
+    const elements = document.querySelectorAll('[data-lang-zh]');
+    elements.forEach(el => {
+        const zhText = el.getAttribute('data-lang-zh');
+        const enText = el.getAttribute('data-lang-en');
+        el.textContent = currentLang === 'zh' ? zhText : enText;
+    });
+    
+    // 更新高级设置按钮文本
+    const advButton = document.getElementById('toggleAdvancedButton');
+    const advControls = document.getElementById('advancedControls');
+    const isVisible = advControls.style.display !== 'none';
+    if (currentLang === 'zh') {
+        advButton.textContent = isVisible ? '隐藏设置' : '高级设置';
+    } else {
+        advButton.textContent = isVisible ? 'Hide' : 'Advanced';
+    }
 }
 
 // 在DOMContentLoaded事件中更新高级设置HTML
