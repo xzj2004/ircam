@@ -1,198 +1,286 @@
-# MLX90640 热成像相机项目
+# MLX90640 Thermal Imaging Camera Project
 
-[English Version](README_EN.md)
+[简体中文_说明](README_ZH.md)
 
-## 项目简介
+## Project Introduction
 
-这是一个基于ESP32-C3和MLX90640红外热成像传感器的智能热成像相机项目。项目使用ESP-IDF框架开发，通过WiFi热点提供Web界面，实现实时热成像显示、温度测量和图像处理功能。
+This is a DIY ultra-portable WiFi thermal imaging camera using MLX90640 sensor. It's compact, portable, supports charging, and features a snap-on shell design that requires no screws or glue. You can view real-time images on your phone or computer browser, with support for zoom interpolation, color mapping, and temperature measurement. Free modification and commercial use are allowed and encouraged.
 
-**项目作者：** 搞硬件的辛工  
-**开源地址：** https://github.com/xzj2004/ircam  
-**项目合作微信：** mcugogogo  
-**开源协议：** MIT (允许自由修改发布及商用)
+This project requires advanced soldering skills.
 
-## 核心功能
+**Ready-made Purchase:** [Click Here](www.tindie.com/products/39742/)
 
-### 1. 热成像数据采集
-- **传感器：** MLX90640 32×24像素红外热成像传感器
-- **分辨率：** 支持多种插值分辨率 (32×24, 96×72, 160×120, 224×168, 288×216, 384×288)
-- **采样频率：** 可调节的数据采集频率
-- **温度范围：** 支持自动和手动温度范围设置
+**Project Author:** SuperJun  
+**Open Source Address:** https://github.com/xzj2004/ircam  
+**Project Collaboration WhatsApp:** +86 17354491260  
+**Open Source License:** MIT (Free modification, distribution, and commercial use allowed)
 
-### 2. 实时图像处理
-- **插值算法：** 双线性插值和最近邻插值
-- **色彩映射：** 支持彩虹图、热力图、地狱火、涡轮图等多种配色方案
-- **图像增强：** 高斯模糊、温度范围平滑等高级处理功能
-- **热点检测：** 自动识别并标记最高温度位置
+## Project Purpose
 
-### 3. Web界面控制
-- **响应式设计：** 支持全屏显示和多种分辨率
-- **实时控制：** 开始/停止采集、参数调节
-- **高级设置：** 发射率调节、温度范围手动设置
-- **FPS显示：** 实时帧率监控
+I originally designed it for quickly locating abnormally hot components during PCB hardware debugging. Compared to expensive professional thermal cameras, this DIY solution is lighter, lower cost, with easily available components, and convenient to use anytime.
 
-### 4. 网络功能
-- **WiFi热点：** 自动创建"IRCAM-XXXX"热点网络（XXXX为随机4位字母或数字）
-- **Web服务器：** 内置HTTP服务器提供控制界面
-- **多客户端支持：** 最多支持4个客户端同时连接
+## Project Specifications
 
-## 项目结构
+* This design uses MLX90640 infrared camera, 32×24 pixels, I2C interface communication, compatible with 3.3V/5V levels
+* Main controller uses ESP32-C3, supports WiFi and Bluetooth, lower cost compared to ESP32 series
+* Main controller software development uses PlatformIO's ESP-IDF environment
+* ESP32-C3 works in AP mode with built-in web page and DNS resolution service
+
+## Core Features
+
+### 1. Thermal Imaging Data Collection
+- **Sensor:** MLX90640 32×24 pixel infrared thermal imaging sensor
+- **Resolution:** Supports multiple interpolation resolutions (32×24, 96×72, 160×120, 224×168, 288×216, 384×288)
+- **Sampling Frequency:** Adjustable data acquisition frequency
+- **Temperature Range:** Supports automatic and manual temperature range settings
+
+### 2. Real-time Image Processing
+- **Interpolation Algorithms:** Bilinear interpolation and nearest neighbor interpolation
+- **Color Mapping:** Supports rainbow, heat map, hellfire, turbo, and other color schemes
+- **Image Enhancement:** Advanced processing features like Gaussian blur, temperature range smoothing
+- **Hotspot Detection:** Automatically identifies and marks the highest temperature location
+
+### 3. Web Interface Control
+- **Responsive Design:** Supports full-screen display and multiple resolutions
+- **Real-time Control:** Start/stop acquisition, parameter adjustment
+- **Advanced Settings:** Emissivity adjustment, manual temperature range setting
+- **FPS Display:** Real-time frame rate monitoring
+
+### 4. Network Functions
+- **WiFi Hotspot:** Automatically creates "IRCAM-XXXX" hotspot network (XXXX is random 4 alphanumeric characters)
+- **Web Server:** Built-in HTTP server provides control interface
+- **Multi-client Support:** Supports up to 4 clients connected simultaneously
+
+## Working Principle
+
+This project consists of the following parts: voltage regulation and power selection, main controller, charging circuit, I2C communication, and download interface. The project mainly receives infrared data through the infrared sensor, ESP32 transmits it to the user's web page for parsing and image display. Various adjustment parameters are preset for you to try and experience.
+
+## Product Images
+
+### Physical Device
+![Physical Image](https://image.lceda.cn/oshwhub/pullImage/9b3be6d651d54d32af320eeaf3ad4744.jpg)
+
+### Web Interface
+![Web Interface](https://image.lceda.cn/oshwhub/pullImage/32bec04df57c46a599047a2f93cd0021.png)
+
+## Android APP
+
+In addition to the web interface, I also developed a dedicated APP for Android devices, providing a smoother user experience and more features.
+
+**APP Documentation and Download:** [Click Here](http://yunqian.xyz/products/thermal-imaging/)
+
+![Android APP Interface](http://yunqian.xyz/images/guide/step5-2.png)
+
+## Project Structure
 
 ```
 platformio-code-Project/
-├── src/                          # 主要源代码
-│   ├── main.c                   # 主程序文件 (779行)
-│   └── CMakeLists.txt          # CMake构建配置
-├── lib/                         # 项目库文件
-│   ├── MLX90640/               # MLX90640传感器驱动库
-│   │   ├── MLX90640_API.h      # API接口头文件
-│   │   ├── MLX90640_API.cpp    # API实现 (1184行)
-│   │   └── MLX90640_I2C_Driver.h # I2C驱动接口
-│   └── README                   # 库说明文档
-├── data/                        # Web资源文件
-│   └── web_script.js           # 前端JavaScript代码 (469行)
-├── platformio.ini              # PlatformIO项目配置
-├── partitions.csv              # ESP32分区表配置
-└── extra_script.py             # 自定义构建脚本
+├── src/                          # Main source code
+│   ├── main.c                   # Main program file (779 lines)
+│   └── CMakeLists.txt          # CMake build configuration
+├── lib/                         # Project libraries
+│   ├── MLX90640/               # MLX90640 sensor driver library
+│   │   ├── MLX90640_API.h      # API interface header file
+│   │   ├── MLX90640_API.cpp    # API implementation (1184 lines)
+│   │   └── MLX90640_I2C_Driver.h # I2C driver interface
+│   └── README                   # Library documentation
+├── data/                        # Web resources
+│   └── web_script.js           # Frontend JavaScript code (469 lines)
+├── platformio.ini              # PlatformIO project configuration
+├── partitions.csv              # ESP32 partition table configuration
+└── extra_script.py             # Custom build script
 ```
 
-## 核心代码位置说明
+## Software Code
 
-### 1. 主程序逻辑 - `src/main.c`
+GitHub Source Code: [Click to Jump - ircam](https://github.com/xzj2004/ircam)
+* Main program: `src/main.c`
+* Web JavaScript: `data/web_script.js`
+* MLX90640 driver: `lib/MLX90640/MLX90640_API.cpp`
+* `extra_script.py` is the script for flashing JS files to flash
 
-#### 热成像传感器初始化和配置
+## Core Code Location Description
+
+### 1. Main Program Logic - `src/main.c`
+
+#### Thermal Imaging Sensor Initialization and Configuration
 ```c
-// 第120-130行：I2C配置
-#define I2C_MASTER_SCL_IO    GPIO_NUM_5        // I2C时钟引脚
-#define I2C_MASTER_SDA_IO    GPIO_NUM_4        // I2C数据引脚
-#define I2C_MASTER_FREQ_HZ   400000            // I2C频率400kHz
+// Lines 120-130: I2C configuration
+#define I2C_MASTER_SCL_IO    GPIO_NUM_5        // I2C clock pin
+#define I2C_MASTER_SDA_IO    GPIO_NUM_4        // I2C data pin
+#define I2C_MASTER_FREQ_HZ   400000            // I2C frequency 400kHz
 
-// 第132-135行：MLX90640配置
-const uint8_t MLX90640_I2C_ADDR = 0x33;       // 传感器I2C地址
-static paramsMLX90640 mlx90640_params;         // 传感器参数
-static float mlx90640_temperatures[768];       // 温度数据缓冲区
+// Lines 132-135: MLX90640 configuration
+const uint8_t MLX90640_I2C_ADDR = 0x33;       // Sensor I2C address
+static paramsMLX90640 mlx90640_params;         // Sensor parameters
+static float mlx90640_temperatures[768];       // Temperature data buffer
 ```
 
-#### I2C通信驱动实现
+#### I2C Communication Driver Implementation
 ```c
-// 第150-200行：MLX90640_I2CRead函数
-// 实现从MLX90640读取数据的I2C通信
+// Lines 150-200: MLX90640_I2CRead function
+// Implements I2C communication to read data from MLX90640
 
-// 第200-250行：MLX90640_I2CWrite函数  
-// 实现向MLX90640写入数据的I2C通信
+// Lines 200-250: MLX90640_I2CWrite function  
+// Implements I2C communication to write data to MLX90640
 ```
 
-#### 数据采集任务
+#### Data Acquisition Task
 ```c
-// 第300-400行：frameCaptureTask函数
-// 负责持续采集热成像数据的FreeRTOS任务
+// Lines 300-400: frameCaptureTask function
+// FreeRTOS task responsible for continuously collecting thermal imaging data
 ```
 
-#### Web服务器和HTTP处理
+#### Web Server and HTTP Handling
 ```c
-// 第500-600行：HTTP请求处理函数
-// 包括数据获取、参数设置等API接口
+// Lines 500-600: HTTP request handling functions
+// Includes API interfaces for data acquisition, parameter settings, etc.
 ```
 
-#### HTML页面生成
+#### HTML Page Generation
 ```c
-// 第50-110行：HTML页面模板
-// 包含完整的Web界面HTML代码
+// Lines 50-110: HTML page template
+// Contains complete Web interface HTML code
 ```
 
-### 2. 前端JavaScript - `data/web_script.js`
+### 2. Frontend JavaScript - `data/web_script.js`
 
-#### 画布渲染和图像处理
+#### Canvas Rendering and Image Processing
 ```javascript
-// 第1-50行：画布初始化和基本设置
+// Lines 1-50: Canvas initialization and basic settings
 const canvas = document.getElementById('thermalCanvas');
 const ctx = canvas.getContext('2d');
 
-// 第50-100行：色彩映射和插值算法
+// Lines 50-100: Color mapping and interpolation algorithms
 const colormaps = {
     hot: [[0,0,0],[0.3,0,0],[0.6,0.3,0],...],
     jet: [[0,0,0.5],[0,0,1],[0,1,1],...],
-    // ... 其他配色方案
+    // ... other color schemes
 };
 ```
 
-#### 实时数据获取和显示
+#### Real-time Data Acquisition and Display
 ```javascript
-// 第200-300行：数据获取和渲染循环
-// 实现与后端的数据通信和实时显示更新
+// Lines 200-300: Data acquisition and rendering loop
+// Implements data communication with backend and real-time display updates
 ```
 
-#### 用户交互控制
+#### User Interaction Control
 ```javascript
-// 第300-400行：用户界面控制逻辑
-// 包括分辨率切换、色彩方案选择、参数调节等
+// Lines 300-400: User interface control logic
+// Includes resolution switching, color scheme selection, parameter adjustment, etc.
 ```
 
-### 3. MLX90640驱动库 - `lib/MLX90640/`
+### 3. MLX90640 Driver Library - `lib/MLX90640/`
 
-#### API接口定义
+#### API Interface Definition
 ```cpp
-// MLX90640_API.h - 第1-73行
-// 定义传感器操作的所有API函数接口
+// MLX90640_API.h - Lines 1-73
+// Defines all API function interfaces for sensor operations
 ```
 
-#### 核心算法实现
+#### Core Algorithm Implementation
 ```cpp
-// MLX90640_API.cpp - 第1-1184行
-// 包含温度计算、校准、数据处理等核心算法
+// MLX90640_API.cpp - Lines 1-1184
+// Contains core algorithms for temperature calculation, calibration, data processing, etc.
 ```
 
-## 硬件连接
+## Hardware Connection
 
-| ESP32-C3引脚 | MLX90640引脚 | 功能说明 |
+| ESP32-C3 Pin | MLX90640 Pin | Function Description |
 |-------------|-------------|----------|
-| GPIO5      | SCL         | I2C时钟线 |
-| GPIO4      | SDA         | I2C数据线 |
-| 3.3V       | VDD         | 电源正极 |
-| GND        | VSS         | 电源地线 |
+| GPIO5      | SCL         | I2C clock line |
+| GPIO4      | SDA         | I2C data line |
+| 3.3V       | VDD         | Power positive |
+| GND        | VSS         | Power ground |
 
-## 使用方法
+## Important Notes
 
-### 1. 编译和烧录
+* Thermal camera hotspot name: IRCAM-XXXX (XXXX is a random combination of 4 letters/numbers), no password required
+![WiFi Connection](https://image.lceda.cn/oshwhub/pullImage/9961d66ac7664ac69ef608bce960c187.png)
+* Browser access address: ircam.com or 192.168.1.4, **must** connect to WiFi first before accessing [Click to Jump - Thermal Camera Web](http://ircam.com/)
+* ESP32-C3 chip must have built-in flash, 4M is sufficient
+* MLX90640 has two model options, choose according to your needs. I use BAA model here
+
+![MLX90640 Models](https://image.lceda.cn/oshwhub/pullImage/a358fea5b5444f71b4c80e7a92234953.png)
+
+## Flashing Process
+
+After configuring the PlatformIO environment (search "PlatformIO installation tutorial" on Bilibili for specific tutorials):
+Open the project - select the correct port - click the right arrow at the bottom of the window to flash
+
+![Flashing Process](https://image.lceda.cn/oshwhub/pullImage/df4bbec4ab7c47149c353613a28e89dd.png)
+
+After flashing, the program runs automatically. Connect to the WiFi named "IRCam" (password: 12345678), access ircam.com in your browser to view the thermal image
+
+![Settings Interface](https://image.lceda.cn/oshwhub/pullImage/72c2dc0a371a4e4eab8fe9fdb64c4259.png)
+
+There are many parameters and modes that can be adjusted to achieve the desired effect
+
+## Soldering Tips
+
+Solder the board and perform software flashing test first. The thermal imaging head can be left unsoldered initially, then soldered after successful testing.
+
+It's not recommended to solder the thermal imaging head flush against the board, as it can easily cause short circuits.
+Recommended soldering method - leave some floating distance:
+
+![Soldering Tips](https://image.lceda.cn/oshwhub/pullImage/97c4cc602cde48e8b6b01b70b6b7015c.png)
+
+If solder completely covers these holes, issues like inability to power on or no image display will occur:
+
+![Solder Warning](https://image.lceda.cn/oshwhub/pullImage/898e26cc3c0c4563aa89b7aeb7a315a2.png)
+
+## Q&A Troubleshooting
+
+**Q:** Plugging in USB, computer shows unrecognized device / no response when USB is plugged in  
+**A:** Most likely the Type-C D+/D- pins are not soldered properly, please check
+
+## Usage Instructions
+
+### 1. Compilation and Flashing
 ```bash
-# 使用PlatformIO编译
+# Compile using PlatformIO
 pio run
 
-# 烧录到ESP32-C3
+# Flash to ESP32-C3
 pio run --target upload
 ```
 
-### 2. 连接和配置
-1. 将MLX90640传感器连接到ESP32-C3的指定引脚
-2. 上电后ESP32-C3会自动创建"IRCAM-XXXX" WiFi热点（XXXX为随机4位字母或数字）
-3. 连接WiFi热点（无需密码）
-4. 在浏览器中访问 ircam.com
+### 2. Connection and Configuration
+1. Connect the MLX90640 sensor to the specified pins on ESP32-C3
+2. After powering on, ESP32-C3 will automatically create an "IRCAM-XXXX" WiFi hotspot
+3. Connect to the WiFi hotspot (no password required)
+4. Access ircam.com or 192.168.1.4 in a browser
 
-### 3. 功能操作
-- **开始采集：** 点击"开始采集"按钮启动热成像
-- **分辨率调节：** 选择不同的插值分辨率
-- **色彩方案：** 选择不同的温度色彩映射
-- **高级设置：** 调节发射率、温度范围等参数
+### 3. Functional Operation
+- **Start Acquisition:** Click the "Start Acquisition" button to start thermal imaging
+- **Resolution Adjustment:** Select different interpolation resolutions
+- **Color Scheme:** Choose different temperature color mappings
+- **Advanced Settings:** Adjust emissivity, temperature range, and other parameters
 
-## 技术特点
+## Technical Features
 
-- **实时性能：** 优化的数据采集和渲染算法
-- **多分辨率支持：** 从原始32×24到384×288多种分辨率
-- **高级图像处理：** 支持多种插值算法和图像增强
-- **响应式Web界面：** 支持各种设备屏幕尺寸
-- **开源协议：** MIT协议，支持商业使用
+- **Real-time Performance:** Optimized data acquisition and rendering algorithms
+- **Multi-resolution Support:** Multiple resolutions from original 32×24 to 384×288
+- **Advanced Image Processing:** Supports various interpolation algorithms and image enhancements
+- **Responsive Web Interface:** Supports various device screen sizes
+- **Open Source License:** MIT license, supports commercial use
 
-## 注意事项
+## Notes
 
-- 本项目仅用于学习交流，请勿用于非法用途
-- 使用前请确保MLX90640传感器正确连接
-- 建议在通风良好的环境中使用，避免传感器过热
-- 温度测量精度受环境因素影响，建议定期校准
+- This project is for learning and exchange purposes only, please do not use for illegal purposes
+- Please ensure the MLX90640 sensor is correctly connected before use
+- It is recommended to use in a well-ventilated environment to avoid sensor overheating
+- Temperature measurement accuracy is affected by environmental factors, regular calibration is recommended
 
-## 贡献和合作
+## Community Group
 
-欢迎提交Issue和Pull Request来改进项目。如果您有创意想法或项目落地需求，欢迎通过微信 `mcugogogo` 联系作者进行合作。
+![Community Group](https://image.lceda.cn/oshwhub/pullImage/8d5c86fbf55348efb326146db78ffa28.jpg)
 
-## 许可证
+## Contribution and Collaboration
 
-本项目采用MIT开源协议，详情请参考LICENSE文件。 
+Welcome to submit Issues and Pull Requests to improve the project. If you have creative ideas or project implementation needs, please contact the author through WhatsApp at `+86 17354491260` for collaboration.
+
+## License
+
+This project is licensed under the MIT open source license, please refer to the LICENSE file for details.
