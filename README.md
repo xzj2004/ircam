@@ -58,10 +58,10 @@ This project consists of the following parts: voltage regulation and power selec
 ## Product Images
 
 ### Physical Device
-![Physical Image](https://image.lceda.cn/oshwhub/pullImage/9b3be6d651d54d32af320eeaf3ad4744.jpg)
+![Physical Image](IMG/physical_device.jpg)
 
 ### Web Interface
-![Web Interface](https://image.lceda.cn/oshwhub/pullImage/32bec04df57c46a599047a2f93cd0021.png)
+![Web Interface](IMG/web_interface.png)
 
 ## Android APP
 
@@ -69,7 +69,7 @@ In addition to the web interface, I also developed a dedicated APP for Android d
 
 **APP Documentation and Download:** [Click Here](http://yunqian.xyz/products/thermal-imaging/)
 
-![Android APP Interface](http://yunqian.xyz/images/guide/step5-2.png)
+![Android APP Interface](IMG/android_app.png)
 
 ## Project Structure
 
@@ -197,23 +197,23 @@ const colormaps = {
 ## Important Notes
 
 * Thermal camera hotspot name: IRCAM-XXXX (XXXX is a random combination of 4 letters/numbers), no password required
-![WiFi Connection](https://image.lceda.cn/oshwhub/pullImage/9961d66ac7664ac69ef608bce960c187.png)
+![WiFi Connection](IMG/wifi_connection.png)
 * Browser access address: ircam.com or 192.168.1.4, **must** connect to WiFi first before accessing [Click to Jump - Thermal Camera Web](http://ircam.com/)
 * ESP32-C3 chip must have built-in flash, 4M is sufficient
 * MLX90640 has two model options, choose according to your needs. I use BAA model here
 
-![MLX90640 Models](https://image.lceda.cn/oshwhub/pullImage/a358fea5b5444f71b4c80e7a92234953.png)
+![MLX90640 Models](IMG/mlx90640_models.png)
 
 ## Flashing Process
 
 After configuring the PlatformIO environment (search "PlatformIO installation tutorial" on Bilibili for specific tutorials):
 Open the project - select the correct port - click the right arrow at the bottom of the window to flash
 
-![Flashing Process](https://image.lceda.cn/oshwhub/pullImage/df4bbec4ab7c47149c353613a28e89dd.png)
+![Flashing Process](IMG/flashing_process.png)
 
 After flashing, the program runs automatically. Connect to the WiFi named "IRCam" (password: 12345678), access ircam.com in your browser to view the thermal image
 
-![Settings Interface](https://image.lceda.cn/oshwhub/pullImage/72c2dc0a371a4e4eab8fe9fdb64c4259.png)
+![Settings Interface](IMG/settings_interface.png)
 
 There are many parameters and modes that can be adjusted to achieve the desired effect
 
@@ -224,11 +224,11 @@ Solder the board and perform software flashing test first. The thermal imaging h
 It's not recommended to solder the thermal imaging head flush against the board, as it can easily cause short circuits.
 Recommended soldering method - leave some floating distance:
 
-![Soldering Tips](https://image.lceda.cn/oshwhub/pullImage/97c4cc602cde48e8b6b01b70b6b7015c.png)
+![Soldering Tips](IMG/soldering_tips.png)
 
 If solder completely covers these holes, issues like inability to power on or no image display will occur:
 
-![Solder Warning](https://image.lceda.cn/oshwhub/pullImage/898e26cc3c0c4563aa89b7aeb7a315a2.png)
+![Solder Warning](IMG/solder_warning.png)
 
 ## Q&A Troubleshooting
 
@@ -275,7 +275,7 @@ pio run --target upload
 
 ## Community Group
 
-![Community Group](https://image.lceda.cn/oshwhub/pullImage/8d5c86fbf55348efb326146db78ffa28.jpg)
+![Community Group](IMG/community_group.jpg)
 
 ## Contribution and Collaboration
 

@@ -58,10 +58,10 @@
 ## 实物图
 
 ### 图1：实物图
-![实物图](https://image.lceda.cn/oshwhub/pullImage/9b3be6d651d54d32af320eeaf3ad4744.jpg)
+![实物图](IMG/physical_device.jpg)
 
 ### 图2：网页界面图
-![网页界面图](https://image.lceda.cn/oshwhub/pullImage/32bec04df57c46a599047a2f93cd0021.png)
+![网页界面图](IMG/web_interface.png)
 
 ## 安卓APP
 
@@ -69,7 +69,7 @@
 
 **APP说明和下载地址：** [点击跳转](http://yunqian.xyz/products/thermal-imaging/)
 
-![安卓APP界面](http://yunqian.xyz/images/guide/step5-2.png)
+![安卓APP界面](IMG/android_app.png)
 
 ## 项目结构
 
@@ -197,23 +197,23 @@ const colormaps = {
 ## 注意事项
 
 * 热成像的热点名称为：IRCAM-XXXX（XXXX为随机的四个字母数字组合）无密码
-![WiFi连接](https://image.lceda.cn/oshwhub/pullImage/9961d66ac7664ac69ef608bce960c187.png)
+![WiFi连接](IMG/wifi_connection.png)
 * 浏览器访问的地址为 ircam.com 或 192.168.1.4，**必须**先连上WiFi再访问 [点我跳转-热成像网页端](http://ircam.com/)
 * ESP32-C3芯片要买带内置flash的，4M就够用了
 * MLX90640有两种型号选择，大家可以根据需求自行选择，这里我用的是BAA
 
-![MLX90640型号](https://image.lceda.cn/oshwhub/pullImage/a358fea5b5444f71b4c80e7a92234953.png)
+![MLX90640型号](IMG/mlx90640_models.png)
 
 ## 烧录流程
 
 配置好PlatformIO环境之后（具体教程可在B站搜索"platformio安装教程"）：
 打开项目工程 - 选择好端口 - 点击窗口下方的右箭头烧录
 
-![烧录流程](https://image.lceda.cn/oshwhub/pullImage/df4bbec4ab7c47149c353613a28e89dd.png)
+![烧录流程](IMG/flashing_process.png)
 
 烧录完成后程序自动运行，连接上名为"IRCAM-XXXX"的WiFi（无需密码），浏览器访问 ircam.com 即可查看热成像画面
 
-![设置界面](https://image.lceda.cn/oshwhub/pullImage/72c2dc0a371a4e4eab8fe9fdb64c4259.png)
+![设置界面](IMG/settings_interface.png)
 
 有很多参数和模式可以调整达到自己想要的效果
 
@@ -224,11 +224,11 @@ const colormaps = {
 热成像头不建议紧贴板子焊，容易造成短路
 建议如下焊接，浮空一点距离：
 
-![焊接提示](https://image.lceda.cn/oshwhub/pullImage/97c4cc602cde48e8b6b01b70b6b7015c.png)
+![焊接提示](IMG/soldering_tips.png)
 
 锡只要完全覆盖了这些孔洞，就会和GND短路出现无法开机、不显示图像等问题：
 
-![焊接注意](https://image.lceda.cn/oshwhub/pullImage/898e26cc3c0c4563aa89b7aeb7a315a2.png)
+![焊接注意](IMG/solder_warning.png)
 
 ## Q&A 问题排查
 
@@ -275,7 +275,7 @@ pio run --target upload
 
 ## 复刻交流群
 
-![复刻交流群](https://image.lceda.cn/oshwhub/pullImage/8d5c86fbf55348efb326146db78ffa28.jpg)
+![复刻交流群](IMG/community_group.jpg)
 
 ## 贡献和合作
 
