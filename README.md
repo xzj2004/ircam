@@ -2,6 +2,8 @@
 
 [简体中文_说明](README_ZH.md)
 
+![Physical Device](IMG/physical_device.jpg)
+
 ## Project Introduction
 
 This is a DIY ultra-portable WiFi thermal imaging camera using MLX90640 sensor. It's compact, portable, supports charging, and features a snap-on shell design that requires no screws or glue. You can view real-time images on your phone or computer browser, with support for zoom interpolation, color mapping, and temperature measurement. Free modification and commercial use are allowed and encouraged.
